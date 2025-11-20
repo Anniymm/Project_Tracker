@@ -1,0 +1,23 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Project3.Domain.Entities;
+
+namespace Project3.Infrastructure.Persistence;
+
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+        
+    }
+    
+     public DbSet<Appointment> Appointment => Set<Appointment>();
+     public DbSet<ServiceProviders> ServiceProviders => Set<ServiceProviders>();
+     public DbSet<WorkingHours> WorkingHours => Set<WorkingHours>();
+
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
+     {
+         base.OnModelCreating(modelBuilder);
+         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+     }
+     
+}
