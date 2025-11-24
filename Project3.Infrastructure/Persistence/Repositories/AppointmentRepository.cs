@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project3.Application.Common.Interfaces.Appointments;
+using Project3.Application.Common.Interfaces;
 using Project3.Domain.Entities;
 
 namespace Project3.Infrastructure.Persistence.Repositories.Appointments;

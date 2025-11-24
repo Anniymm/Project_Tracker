@@ -789,6 +789,15 @@
           }
         }
       },
+      "Swashbuckle.AspNetCore/9.0.0": {
+        "type": "package",
+        "build": {
+          "build/Swashbuckle.AspNetCore.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Swashbuckle.AspNetCore.props": {}
+        }
+      },
       "System.CodeDom/6.0.0": {
         "type": "package",
         "compile": {
@@ -2826,6 +2835,20 @@
         "postgresql.png"
       ]
     },
+    "Swashbuckle.AspNetCore/9.0.0": {
+      "sha512": "y6Q+U2Y6lrY0W8jQ97zSdFWuQioxXx4zbTLVFQBh9jcxkvizo2Y4pRNK0xx3VsYy78qQjSJNsarxAxr4VQqUHw==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore/9.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Swashbuckle.AspNetCore.props",
+        "buildMultiTargeting/Swashbuckle.AspNetCore.props",
+        "docs/package-readme.md",
+        "swashbuckle.aspnetcore.9.0.0.nupkg.sha512",
+        "swashbuckle.aspnetcore.nuspec"
+      ]
+    },
     "System.CodeDom/6.0.0": {
       "sha512": "CPc6tWO1LAer3IzfZufDBRL+UZQcj5uS207NHALQzP84Vp/z6wF0Aa0YZImOQY8iStY0A2zI/e3ihKNPfUm8XA==",
       "type": "package",
@@ -3764,7 +3787,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.1",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.1",
       "Project3.Application >= 1.0.0",
-      "Project3.Infrastructure >= 1.0.0"
+      "Project3.Infrastructure >= 1.0.0",
+      "Swashbuckle.AspNetCore >= 9.0.0"
     ]
   },
   "packageFolders": {
@@ -3837,6 +3861,10 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
             "version": "[9.0.1, )"
+          },
+          "Swashbuckle.AspNetCore": {
+            "target": "Package",
+            "version": "[9.0.0, )"
           }
         },
         "imports": [

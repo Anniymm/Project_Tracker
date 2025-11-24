@@ -1,6 +1,6 @@
 ﻿namespace Project3.Domain.Entities;
 
-public class WorkingHours
+public class WorkingHour
 {
     public Guid Id { get; private set; }
     public Guid ProviderId { get; private set; }
@@ -9,9 +9,9 @@ public class WorkingHours
     public TimeOnly EndTime { get; private set; }
     public bool IsActive { get; private set; }
 
-    public WorkingHours() { }
+    public WorkingHour() { }
 
-    public WorkingHours(
+    public WorkingHour(
         Guid id,
         Guid providerId,
         int dayOfWeek,

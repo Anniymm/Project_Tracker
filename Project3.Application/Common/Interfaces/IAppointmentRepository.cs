@@ -1,6 +1,6 @@
 ﻿using Project3.Domain.Entities;
 
-namespace Project3.Application.Common.Interfaces.Appointments;
+namespace Project3.Application.Common.Interfaces;
 
 public interface IAppointmentRepository
 

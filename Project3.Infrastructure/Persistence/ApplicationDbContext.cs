@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
     
      public DbSet<Appointment> Appointment => Set<Appointment>();
      public DbSet<ServiceProvider> ServiceProvider => Set<ServiceProvider>();
-     public DbSet<WorkingHours> WorkingHours => Set<WorkingHours>();
+     public DbSet<WorkingHour> WorkingHours => Set<WorkingHour>();
 
      protected override void OnModelCreating(ModelBuilder modelBuilder)
      {

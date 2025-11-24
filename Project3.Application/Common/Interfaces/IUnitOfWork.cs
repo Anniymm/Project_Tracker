@@ -1,6 +1,4 @@
-﻿using Project3.Application.Common.Interfaces.Appointments;
-
-namespace Project3.Application.Common.Interfaces;
+﻿namespace Project3.Application.Common.Interfaces;
 
 // radgan aaplication layerma ar icis ef core rom arsebobs, amitom datas shenaxvis kontrolostvis mwhirdeba es 
 // magalitad - raghacebi an ertad sruldeba an ertad faildeba da amitom ert commitad unda gavides
@@ -15,6 +13,7 @@ public interface IUnitOfWork
 {
     IAppointmentRepository Appointments { get; }
     IServiceProviderRepository ServiceProviders { get; }
+    IWorkingHourRepository WorkingHours { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
