@@ -4,9 +4,9 @@ using Project3.Domain.Entities;
 
 namespace Project3.Infrastructure.Persistence.Configurations;
 
-public class ServiceProvidersConfiguration : IEntityTypeConfiguration<ServiceProviders>
+public class ServiceProviderConfiguration : IEntityTypeConfiguration<ServiceProvider>
 {
-    public void Configure(EntityTypeBuilder<ServiceProviders> builder)
+    public void Configure(EntityTypeBuilder<ServiceProvider> builder)
     {
         builder.ToTable("service_providers");
         

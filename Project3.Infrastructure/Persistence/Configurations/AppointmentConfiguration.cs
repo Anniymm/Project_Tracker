@@ -18,7 +18,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(x => x.ProviderId)
             .IsRequired();
             
-        builder.HasOne<ServiceProviders>() // ert providers 
+        builder.HasOne<ServiceProvider>() // ert providers 
             .WithMany()  // aqvs bevri appointment 
             .HasForeignKey(x => x.ProviderId);
             
@@ -45,12 +45,12 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         
         builder.Property(x => x.EndTime)
             .IsRequired();
-        
-        
+
+
         builder.Property(x => x.Status)
             .IsRequired()
             .HasConversion<string>();
-            
+        
         builder.Property(x => x.CancellationReason)
             .IsRequired(false) 
             .HasMaxLength(250); 

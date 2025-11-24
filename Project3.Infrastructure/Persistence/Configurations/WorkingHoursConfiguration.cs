@@ -21,7 +21,7 @@ public class WorkingHoursConfiguration : IEntityTypeConfiguration<WorkingHours>
         builder.Property(x => x.ProviderId)
             .IsRequired();
 
-        builder.HasOne<ServiceProviders>()
+        builder.HasOne<ServiceProvider>()
             .WithMany()
             .HasForeignKey(x => x.ProviderId)
             .OnDelete(DeleteBehavior.Cascade);

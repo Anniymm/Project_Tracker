@@ -6,7 +6,7 @@ public class Appointment
 {
     public Guid Id { get; private set; }
     public Guid ProviderId { get; private set; }
-    public ServiceProviders ServiceProvider { get; private set; }
+    public ServiceProvider ServiceProvider { get; private set; }
     public string CustomerName { get; private set; }
     public string CustomerEmail { get; private set; }
     public string CustomerPhone { get; private set; }

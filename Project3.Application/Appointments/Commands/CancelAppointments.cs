@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
-using FluentValidation.Validators;
+﻿using FluentValidation;
 using MediatR;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;

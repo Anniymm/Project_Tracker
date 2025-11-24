@@ -14,6 +14,7 @@ namespace Project3.Application.Common.Interfaces;
 public interface IUnitOfWork
 {
     IAppointmentRepository Appointments { get; }
+    IServiceProviderRepository ServiceProviders { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

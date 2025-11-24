@@ -1,6 +1,6 @@
 ﻿namespace Project3.Domain.Entities;
 
-public class ServiceProviders
+public class ServiceProvider
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
@@ -9,9 +9,9 @@ public class ServiceProviders
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public ServiceProviders() { }
+    public ServiceProvider() { }
 
-    public ServiceProviders(
+    public ServiceProvider(
         Guid id,
         string name,
         string email,
