@@ -2,7 +2,7 @@
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 
-namespace Project3.Application.ServiceProviders.Commands;
+namespace Project3.Application.Appointments.Commands;
 
 public sealed record DeleteServiceProviderCommand(Guid Id)
     : IRequest<Result>;

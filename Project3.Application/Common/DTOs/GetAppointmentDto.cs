@@ -1,6 +1,6 @@
 ﻿namespace Project3.Application.Common.DTOs;
 
-public sealed record AppointmentDto(
+public record GetAppointmentDto(
     Guid Id,
     Guid ProviderId,
     string CustomerName,

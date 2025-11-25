@@ -31,12 +31,10 @@ public class WorkingHourConfiguration : IEntityTypeConfiguration<WorkingHour>
 
         builder.Property(x => x.StartTime)
             .HasColumnName("start_time")
-            .HasColumnType("time")
             .IsRequired();
 
         builder.Property(x => x.EndTime)
             .HasColumnName("end_time")
-            .HasColumnType("time")
             .IsRequired();
 
         builder.Property(x => x.IsActive)

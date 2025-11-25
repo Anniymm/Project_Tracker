@@ -5,7 +5,7 @@ using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 using Project3.Domain.Entities;
 
-namespace Project3.Application.Commands;
+namespace Project3.Application.Appointments.Commands;
 
 public sealed record CreateServiceProviderCommand(CreateServiceProviderDto Provider)
     : IRequest<Result>;

@@ -8,7 +8,7 @@ using Project3.Domain.Common.Response;
 namespace Project3.Application.Appointments.Queries;
 
 public sealed record GetAppointmentsQuery(Guid ProviderId)
-    : IRequest<Result<List<AppointmentDto>>>;
+    : IRequest<Result<List<GetAppointmentDto>>>;
 
 
 public sealed class GetAppointmentsQueryValidator 
@@ -23,7 +23,7 @@ public sealed class GetAppointmentsQueryValidator
 
 
 public sealed class GetAppointmentsQueryHandler
-    : IRequestHandler<GetAppointmentsQuery, Result<List<AppointmentDto>>>
+    : IRequestHandler<GetAppointmentsQuery, Result<List<GetAppointmentDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -34,19 +34,19 @@ public sealed class GetAppointmentsQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<Result<List<AppointmentDto>>> Handle(
+    public async Task<Result<List<GetAppointmentDto>>> Handle(
         GetAppointmentsQuery request,
         CancellationToken cancellationToken)
     {
         var provider = await _unitOfWork.Appointments.GetByProviderAsync(request.ProviderId);
         if (provider is null)
-            return Result<List<AppointmentDto>>.Failure("Provider not found.");
+            return Result<List<GetAppointmentDto>>.Failure("Provider not found.");
 
         var appointments = await _unitOfWork.Appointments.GetByProviderAsync(request.ProviderId);
 
-        var appointmentDtos = _mapper.Map<List<AppointmentDto>>(appointments);
+        var appointmentDtos = _mapper.Map<List<GetAppointmentDto>>(appointments);
 
-        return Result<List<AppointmentDto>>.Success(
+        return Result<List<GetAppointmentDto>>.Success(
             appointmentDtos,
             "Appointments got successfully."
         );

@@ -1,6 +1,6 @@
 ﻿namespace Project3.Application.Common.DTOs;
 
-public sealed record ServiceProviderDto(
+public record GetServiceProviderDto(
     Guid Id,
     string Name,
     string Email,

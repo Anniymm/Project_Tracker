@@ -10,7 +10,6 @@ public sealed record CancelAppointmentCommand(
     Guid AppointmentId,
     string Reason) : IRequest<Result>;
 
-
 public sealed class CancelAppointmentCommandValidator:
     AbstractValidator<CancelAppointmentCommand>
 {
@@ -24,7 +23,6 @@ public sealed class CancelAppointmentCommandValidator:
             .MaximumLength(250);
     }
 }
-
 
 public sealed class CancelAppointmentHandler
     : IRequestHandler<CancelAppointmentCommand, Result>
