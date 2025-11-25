@@ -5,7 +5,7 @@ using Project3.Domain.Common.Response;
 using Project3.Domain.Entities;
 using Project3.Domain.Enums;
 
-namespace Project3.Application.Appointments.Commands;
+namespace Project3.Application.Features.Commands;
 
 public sealed record CreateAppointmentCommand(
     Guid ProviderId,

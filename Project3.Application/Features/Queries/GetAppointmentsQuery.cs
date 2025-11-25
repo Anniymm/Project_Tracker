@@ -5,7 +5,7 @@ using Project3.Application.Common.DTOs;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 
-namespace Project3.Application.Appointments.Queries;
+namespace Project3.Application.Features.Queries;
 
 public sealed record GetAppointmentsQuery(Guid ProviderId)
     : IRequest<Result<List<GetAppointmentDto>>>;

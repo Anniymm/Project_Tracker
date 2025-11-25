@@ -4,7 +4,7 @@ using Project3.Application.Common.DTOs;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 
-namespace Project3.Application.Appointments.Commands;
+namespace Project3.Application.Features.Commands;
 
 
 public sealed record UpdateServiceProviderCommand(UpdateServiceProviderDto Dto)
