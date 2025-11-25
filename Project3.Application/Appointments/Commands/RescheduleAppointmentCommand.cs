@@ -1,32 +1,34 @@
 ﻿using FluentValidation;
 using MediatR;
+using Project3.Application.Common.DTOs;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 using Project3.Domain.Enums;
 
 namespace Project3.Application.Appointments.Commands;
 
-public sealed record RescheduleAppointmentCommand(
-    Guid AppointmentId,
-    DateOnly NewDate,
-    TimeOnly NewStartTime,
-    TimeOnly NewEndTime ) : IRequest<Result>;
-
+public sealed record RescheduleAppointmentCommand(RescheduleAppointmentDto Dto)
+    : IRequest<Result>;
 
 public sealed class RescheduleAppointmentCommandValidator
     : AbstractValidator<RescheduleAppointmentCommand>
 {
     public RescheduleAppointmentCommandValidator()
     {
-        RuleFor(x => x.AppointmentId).NotEmpty()
+        RuleFor(x => x.Dto.AppointmentId)
+            .NotEmpty()
             .WithMessage("Appointment Id is required");
 
-        RuleFor(x => x.NewDate).NotEmpty();
-        
-        RuleFor(x => x.NewStartTime).NotEmpty();
+        RuleFor(x => x.Dto.NewDate)
+            .NotEmpty()
+            .WithMessage("New date is required");
 
-        RuleFor(x => x.NewEndTime)
-            .GreaterThan(x => x.NewStartTime)
+        RuleFor(x => x.Dto.NewStartTime)
+            .NotEmpty()
+            .WithMessage("Start time is required");
+
+        RuleFor(x => x.Dto.NewEndTime)
+            .GreaterThan(x => x.Dto.NewStartTime)
             .WithMessage("End time must be greater than start time");
     }
 }
@@ -45,7 +47,9 @@ public sealed class RescheduleAppointmentHandler
         RescheduleAppointmentCommand request, 
         CancellationToken cancellationToken)
     {
-        var appointment = await _unitOfWork.Appointments.GetByIdAsync(request.AppointmentId);
+        var dto = request.Dto;
+
+        var appointment = await _unitOfWork.Appointments.GetByIdAsync(dto.AppointmentId);
 
         if (appointment is null)
             return Result.Failure("Appointment not found.");
@@ -58,15 +62,12 @@ public sealed class RescheduleAppointmentHandler
 
         if (appointment.Status == AppointmentStatus.no_show)
             return Result.Failure("No-show appointments cannot be rescheduled.");
-        
-        // if (DateTime.UtcNow > appointment.AppointmentDate.ToDateTime(appointment.StartTime))
-        //     return Result.Failure("You cannot reschedule past appointments.");
 
         appointment.Update(
-            appointmentDate: request.NewDate,
-            startTime: request.NewStartTime,
-            endTime: request.NewEndTime,
-            status: AppointmentStatus.scheduled, // es sheduled unda darches
+            appointmentDate: dto.NewDate,
+            startTime: dto.NewStartTime,
+            endTime: dto.NewEndTime,
+            status: AppointmentStatus.scheduled,
             cancellationReason: null, 
             isRecurring: null,
             recurrenceRule: null
@@ -75,7 +76,4 @@ public sealed class RescheduleAppointmentHandler
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success("Appointment rescheduled successfully.");
     }
-    
-    
 }
-        
