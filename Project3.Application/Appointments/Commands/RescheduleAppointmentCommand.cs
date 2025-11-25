@@ -31,7 +31,6 @@ public sealed class RescheduleAppointmentCommandValidator
     }
 }
 
-
 public sealed class RescheduleAppointmentHandler
     : IRequestHandler<RescheduleAppointmentCommand, Result>
 {
