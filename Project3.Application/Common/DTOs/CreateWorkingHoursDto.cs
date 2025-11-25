@@ -6,3 +6,6 @@ public sealed record CreateWorkingHoursDto(
     TimeOnly StartTime,
     TimeOnly EndTime,
     bool IsActive);
+    
+    
+    

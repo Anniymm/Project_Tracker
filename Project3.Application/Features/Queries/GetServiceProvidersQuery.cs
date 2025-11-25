@@ -9,7 +9,7 @@ namespace Project3.Application.Features.Queries;
 
 
 public sealed record GetServiceProvidersQuery()
-    : IRequest<Result<List<GetServiceProviderDto>>>;
+    : IRequest<Result<List<GetServiceProvidersDto>>>;
 
 
 public sealed class GetServiceProvidersQueryValidator
@@ -19,7 +19,7 @@ public sealed class GetServiceProvidersQueryValidator
 }
 
 public sealed class GetServiceProvidersQueryHandler
-    : IRequestHandler<GetServiceProvidersQuery, Result<List<GetServiceProviderDto>>>
+    : IRequestHandler<GetServiceProvidersQuery, Result<List<GetServiceProvidersDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,19 +30,19 @@ public sealed class GetServiceProvidersQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<Result<List<GetServiceProviderDto>>> Handle(
+    public async Task<Result<List<GetServiceProvidersDto>>> Handle(
         GetServiceProvidersQuery request,
         CancellationToken cancellationToken)
     {
         var providers = await _unitOfWork.ServiceProviders.GetAllAsync();
 
         if (providers.Count == 0)
-            return Result<List<GetServiceProviderDto>>
-                .Success(new List<GetServiceProviderDto>(), "No providers found");
+            return Result<List<GetServiceProvidersDto>>
+                .Success(new List<GetServiceProvidersDto>(), "No providers found");
 
-        var dtos = _mapper.Map<List<GetServiceProviderDto>>(providers);
+        var dtos = _mapper.Map<List<GetServiceProvidersDto>>(providers);
 
-        return Result<List<GetServiceProviderDto>>
+        return Result<List<GetServiceProvidersDto>>
             .Success(dtos, "Service providers retrieved successfully");
     }
 }

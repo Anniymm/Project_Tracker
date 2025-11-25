@@ -1,41 +1,24 @@
-﻿using Project3.Domain.Entities;
+﻿using Project3.Application.Common.DTOs;
 
 namespace Project3.Application.Common.Interfaces;
 
 public interface IWorkingHourService
 {
-    Task<Guid> CreateAsync(
-        Guid providerId,
-        int dayOfWeek,
-        TimeOnly startTime,
-        TimeOnly endTime,
-        bool isActive,
-        CancellationToken ct = default);
+    Task<Guid> CreateAsync(CreateWorkingHoursDto dto, CancellationToken ct);
 
-    Task UpdateAsync(
-        Guid id,
-        int? dayOfWeek,
-        TimeOnly? startTime,
-        TimeOnly? endTime,
-        bool? isActive,
-        CancellationToken ct = default);
+    Task UpdateAsync(UpdateWorkingHoursDto dto, CancellationToken ct);
 
-    Task DeleteAsync(Guid id, CancellationToken ct = default);
+    Task DeleteAsync(Guid id, CancellationToken ct);
 
-    Task<List<WorkingHour>> GetAllAsync(CancellationToken ct = default);
+    Task<List<GetWorkingHoursDto>> GetAllAsync(CancellationToken ct);
 
-    Task<WorkingHour?> GetByIdAsync(Guid id, CancellationToken ct = default);
+    Task<GetWorkingHoursDto?> GetByIdAsync(Guid id, CancellationToken ct);
 
-    Task<List<WorkingHour>> GetByProviderAsync(Guid providerId, CancellationToken ct = default);
+    Task<List<GetWorkingHoursDto>> GetByProviderAsync(Guid providerId, CancellationToken ct);
 
-    Task<List<WorkingHour>> GetByDayOfWeekAsync(int dayOfWeek, CancellationToken ct = default);
+    Task<List<GetWorkingHoursDto>> GetByDayOfWeekAsync(int dayOfWeek, CancellationToken ct);
 
-    Task<List<WorkingHour>> GetByProviderAndDayAsync(
-        Guid providerId,
-        int dayOfWeek,
-        CancellationToken ct = default);
+    Task<List<GetWorkingHoursDto>> GetByProviderAndDayAsync(Guid providerId, int dayOfWeek, CancellationToken ct);
 
-    Task<List<WorkingHour>> GetActiveByProviderAsync(Guid providerId, CancellationToken ct = default);
-
-    
+    Task<List<GetWorkingHoursDto>> GetActiveByProviderAsync(Guid providerId, CancellationToken ct);
 }

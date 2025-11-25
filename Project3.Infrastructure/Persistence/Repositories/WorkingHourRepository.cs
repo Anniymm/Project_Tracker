@@ -28,6 +28,12 @@ public class WorkingHourRepository : IWorkingHourRepository
             _context.WorkingHours.Remove(workingHour);
     }
 
+    public Task UpdateAsync(WorkingHour workingHour)
+    {
+        _context.WorkingHours.Update(workingHour);
+        return Task.CompletedTask;
+    }
+
     public Task<List<WorkingHour>> GetAllAsync()
         => _context.WorkingHours.ToListAsync();
 
