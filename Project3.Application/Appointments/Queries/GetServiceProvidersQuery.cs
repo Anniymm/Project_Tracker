@@ -7,16 +7,15 @@ using Project3.Domain.Common.Response;
 
 namespace Project3.Application.Appointments.Queries;
 
+
 public sealed record GetServiceProvidersQuery()
     : IRequest<Result<List<GetServiceProviderDto>>>;
 
-public class GetServiceProvidersQueryValidator :
-    AbstractValidator<GetServiceProvidersQuery>
+
+public sealed class GetServiceProvidersQueryValidator
+    : AbstractValidator<GetServiceProvidersQuery>
 {
-    public GetServiceProvidersQueryValidator()
-    {
-        
-    }
+  // parametrebi ar maqvs da es unda shevamowmebino // ??????????
 }
 
 public sealed class GetServiceProvidersQueryHandler
@@ -25,9 +24,25 @@ public sealed class GetServiceProvidersQueryHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public Task<Result<List<GetServiceProviderDto>>> Handle(GetServiceProvidersQuery request, CancellationToken cancellationToken)
+    public GetServiceProvidersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        //RuleFor da amis implementation
-        throw new NotImplementedException();
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+
+    public async Task<Result<List<GetServiceProviderDto>>> Handle(
+        GetServiceProvidersQuery request,
+        CancellationToken cancellationToken)
+    {
+        var providers = await _unitOfWork.ServiceProviders.GetAllAsync();
+
+        if (providers.Count == 0)
+            return Result<List<GetServiceProviderDto>>
+                .Success(new List<GetServiceProviderDto>(), "No providers found");
+
+        var dtos = _mapper.Map<List<GetServiceProviderDto>>(providers);
+
+        return Result<List<GetServiceProviderDto>>
+            .Success(dtos, "Service providers retrieved successfully");
     }
 }
