@@ -4,7 +4,7 @@ using Project3.Application.Features.Commands;
 
 namespace Project3.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/appointments")]
 public class AppointmentsController(ISender sender) : ApiController(sender)
 {
     [HttpPost]

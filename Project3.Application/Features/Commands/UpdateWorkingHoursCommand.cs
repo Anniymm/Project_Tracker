@@ -25,7 +25,7 @@ public sealed class UpdateWorkingHoursCommandValidator
                 .WithMessage("DayOfWeek must be between 0 and 6.");
         });
 
-        // validaciebi marto im dros gaaketos roca start da end timebi orive arsebob
+        // validaciebi marto im dros gaaketos roca start da end timebi orive arsebobs
         When(x => x.Dto.StartTime.HasValue && x.Dto.EndTime.HasValue, () =>
         {
             RuleFor(x => x.Dto.StartTime)
