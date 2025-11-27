@@ -12,12 +12,6 @@ public sealed record GetServiceProvidersQuery()
     : IRequest<Result<List<GetServiceProvidersDto>>>;
 
 
-public sealed class GetServiceProvidersQueryValidator
-    : AbstractValidator<GetServiceProvidersQuery>
-{
-  // parametrebi ar maqvs da es unda shevamowmebino // ??????????
-}
-
 public sealed class GetServiceProvidersQueryHandler
     : IRequestHandler<GetServiceProvidersQuery, Result<List<GetServiceProvidersDto>>>
 {

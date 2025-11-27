@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 using Project3.Domain.Entities;

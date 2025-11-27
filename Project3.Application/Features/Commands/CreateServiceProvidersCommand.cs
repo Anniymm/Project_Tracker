@@ -7,7 +7,10 @@ using Project3.Domain.Entities;
 
 namespace Project3.Application.Features.Commands;
 
-public sealed record CreateServiceProviderCommand(CreateServiceProviderDto Provider)
+public sealed record CreateServiceProviderCommand(    
+    string Name,
+    string Email,
+    string Specialty)
     : IRequest<Result>;
 
 public sealed class CreateServiceProviderValidator
@@ -15,9 +18,9 @@ public sealed class CreateServiceProviderValidator
 {
     public CreateServiceProviderValidator()
     {
-        RuleFor(x => x.Provider.Name).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Provider.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Provider.Specialty).NotEmpty().MaximumLength(150);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Email).NotEmpty().EmailAddress();
+        RuleFor(x => x.Specialty).NotEmpty().MaximumLength(150);
     }
 }
 
@@ -33,13 +36,12 @@ public sealed class CreateServiceProviderHandler
 
     public async Task<Result> Handle(CreateServiceProviderCommand request, CancellationToken cancellationToken)
     {
-        var dto = request.Provider;
 
         var provider = new ServiceProvider(
             Guid.NewGuid(),
-            dto.Name,
-            dto.Email,
-            dto.Specialty,
+            request.Name,
+            request.Email,
+            request.Specialty,
             isActive: true,
             createdAt: DateTime.UtcNow
         );

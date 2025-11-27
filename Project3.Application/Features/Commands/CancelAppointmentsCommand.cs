@@ -40,7 +40,6 @@ public sealed class CancelAppointmentHandler
 
         if (appointment is null)
             return Result.Failure("Appointment not found.");
-
         
         if (appointment.Status == AppointmentStatus.completed)
             return Result.Failure("Completed appointments cannot be cancelled.");
