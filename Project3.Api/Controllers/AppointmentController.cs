@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Application.Features.Commands;
+using Project3.Application.Features.Queries;
 
 namespace Project3.Api.Controllers;
 
@@ -27,6 +28,26 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
         return await Handle(new CancelAppointmentCommand(appointmentId, reason));
     }
     
+    [HttpGet]
+    public async Task<IResult> GetAllAppointments()
+    {
+        return await Handle(new GetAllAppointmentsQuery());
+    }
+    
+    
+    [HttpGet("/{id}")]
+    public async Task<IResult> GetAppointmentById(Guid id)
+    {
+        return await Handle(new GetAppointmentByIdQuery(id));
+    }
+
+    
+    // GET: api/appointments/provider/{providerId}
+    [HttpGet("provider/{providerId}")]
+    public async Task<IResult> GetAppointmentsByProvider(Guid providerId)
+    {
+        return await Handle(new GetAppointmentsByProviderQuery(providerId));
+    }
     
     
     
