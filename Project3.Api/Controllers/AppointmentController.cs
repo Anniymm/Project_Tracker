@@ -14,7 +14,6 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
         return await Handle(command);
     }
 
-    // UNDA DAVCHECKO KIDEV 
     [HttpPut]
     public async Task<IResult> RescheduleAppointment([FromBody] RescheduleAppointmentCommand command)
     {
@@ -35,21 +34,16 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     }
     
     
-    [HttpGet("/{id}")]
+    [HttpGet("appointment/{id}")]
     public async Task<IResult> GetAppointmentById(Guid id)
     {
         return await Handle(new GetAppointmentByIdQuery(id));
     }
 
     
-    // GET: api/appointments/provider/{providerId}
     [HttpGet("provider/{providerId}")]
     public async Task<IResult> GetAppointmentsByProvider(Guid providerId)
     {
         return await Handle(new GetAppointmentsByProviderQuery(providerId));
     }
-    
-    
-    
-        
 }

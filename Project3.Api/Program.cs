@@ -16,7 +16,8 @@ builder.Services.AddApplicationServices();
 
 // DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .UseSnakeCaseNamingConvention());
 
 // Repositories
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
