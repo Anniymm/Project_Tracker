@@ -6,4 +6,4 @@ public enum AppointmentStatus
     completed = 1,
     cancelled = 2,
     no_show = 3
-}
+} // TODO: gaixsene
