@@ -4,17 +4,17 @@ namespace Project3.Application.Common.Interfaces;
 
 public interface IBlockedTimesRepository
 {
-    Task<BlockedTimes?> GetByIdAsync(Guid id);
+    Task<BlockedTime?> GetByIdAsync(Guid id);
     
     // radgan marto vfetchav da add-s an removes ar viyeneb, jobia IEnumerable an IReadOnlyList(indexing tu minda) 
-    Task<IEnumerable<BlockedTimes>> GetByProviderIdAsync(Guid providerId);
+    Task<IEnumerable<BlockedTime>> GetByProviderIdAsync(Guid providerId);
     
-    Task<IEnumerable<BlockedTimes>> GetAllAsync();
+    Task<IEnumerable<BlockedTime>> GetAllAsync();
     
-    Task AddAsync(BlockedTimes blockedTimes);
+    Task AddAsync(BlockedTime blockedTime);
     
-    Task UpdateAsync(BlockedTimes blockedTimes);
+    Task UpdateAsync(BlockedTime blockedTime);
     
-    Task RemoveAsync(BlockedTimes blockedTimes);
+    Task RemoveAsync(BlockedTime blockedTime);
     
 }

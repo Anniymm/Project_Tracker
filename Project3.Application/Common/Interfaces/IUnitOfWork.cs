@@ -14,6 +14,7 @@ public interface IUnitOfWork
     IAppointmentRepository Appointments { get; }
     IServiceProviderRepository ServiceProviders { get; }
     IWorkingHourRepository WorkingHours { get; }
+    IBlockedTimesRepository BlockedTimes { get; }
     
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

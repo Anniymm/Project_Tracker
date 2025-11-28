@@ -1,6 +1,6 @@
 ﻿namespace Project3.Application.Common.DTOs;
 
-public sealed record BlockedTimeCreateUpdateDto(
+public record BlockedTimeCreateUpdateDto(
     Guid ProviderId,
     DateTime StartDateTime,
     DateTime EndDateTime,
