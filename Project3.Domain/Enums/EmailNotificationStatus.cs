@@ -3,6 +3,7 @@
 public enum EmailNotificationStatus
 {
     Pending = 1,
-    Sent = 2,
-    Failed = 3
+    InProgress = 2,
+    Sent = 3,
+    Failed = 4
 }

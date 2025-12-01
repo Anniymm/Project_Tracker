@@ -15,6 +15,7 @@ public class UnitOfWork : IUnitOfWork
         WorkingHours = new WorkingHourRepository(context);
         BlockedTimes = new BlockedTimesRepository(context);
         NotificationLogs = new NotificationLogsRepository(context);
+        EmailQueues = new EmailQueueRepository(context);
     }
 
     public IAppointmentRepository Appointments { get; }
@@ -22,7 +23,7 @@ public class UnitOfWork : IUnitOfWork
     public IWorkingHourRepository WorkingHours { get; }
     public IBlockedTimesRepository BlockedTimes { get; }
     public INotificationLogsRepository NotificationLogs { get; }
-
+    public IEmailQueueRepository EmailQueues { get; }
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);
 }

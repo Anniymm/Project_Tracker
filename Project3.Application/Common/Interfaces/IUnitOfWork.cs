@@ -16,6 +16,7 @@ public interface IUnitOfWork
     IWorkingHourRepository WorkingHours { get; }
     IBlockedTimesRepository BlockedTimes { get; }
     INotificationLogsRepository NotificationLogs { get; }
+    IEmailQueueRepository EmailQueues { get; }
     
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
