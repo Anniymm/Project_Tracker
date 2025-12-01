@@ -4,9 +4,9 @@ using Project3.Domain.Entities;
 
 namespace Project3.Infrastructure.Persistence.Configurations
 {
-    public class BlockedTimesConfiguration : IEntityTypeConfiguration<BlockedTimes>
+    public class BlockedTimesConfiguration : IEntityTypeConfiguration<BlockedTime>
     {
-        public void Configure(EntityTypeBuilder<BlockedTimes> builder)
+        public void Configure(EntityTypeBuilder<BlockedTime> builder)
         {
             builder.ToTable("blocked_times");
 

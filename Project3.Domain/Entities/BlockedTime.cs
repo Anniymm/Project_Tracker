@@ -1,6 +1,6 @@
 ﻿namespace Project3.Domain.Entities;
 
-public class BlockedTimes
+public class BlockedTime
 {
     public Guid Id { get; private set; }
     public Guid ProviderId { get; private set; }
@@ -11,9 +11,9 @@ public class BlockedTimes
 
     public ServiceProvider? ServiceProvider { get; private set; }
 
-    public BlockedTimes() { }
+    public BlockedTime() { }
 
-    public BlockedTimes(
+    public BlockedTime(
         Guid id,
         Guid providerId,
         DateTime startDateTime,

@@ -13,12 +13,15 @@ public class UnitOfWork : IUnitOfWork
         Appointments = new AppointmentRepository(context);
         ServiceProviders = new ServiceProviderRepository(context);
         WorkingHours = new WorkingHourRepository(context);
+        BlockedTimes = new BlockedTimesRepository(context);
+        NotificationLogs = new NotificationLogsRepository(context);
     }
 
     public IAppointmentRepository Appointments { get; }
     public IServiceProviderRepository ServiceProviders { get; }
-    
     public IWorkingHourRepository WorkingHours { get; }
+    public IBlockedTimesRepository BlockedTimes { get; }
+    public INotificationLogsRepository NotificationLogs { get; }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         => _context.SaveChangesAsync(cancellationToken);

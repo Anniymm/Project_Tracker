@@ -23,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
 builder.Services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
+builder.Services.AddScoped<IBlockedTimesRepository, BlockedTimesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Controllers

@@ -13,37 +13,37 @@ public class BlockedTimesRepository : IBlockedTimesRepository
         _context = context;
     }
 
-    public async Task AddAsync(BlockedTimes blockedTime)
+    public async Task AddAsync(BlockedTime blockedTime)
     {
         await _context.BlockedTimes.AddAsync(blockedTime);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(BlockedTimes blockedTime)
+    public async Task UpdateAsync(BlockedTime blockedTime)
     {
         _context.BlockedTimes.Update(blockedTime);
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveAsync(BlockedTimes blockedTime)
+    public async Task RemoveAsync(BlockedTime blockedTime)
     {
         _context.BlockedTimes.Remove(blockedTime);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<BlockedTimes>> GetAllAsync()
+    public async Task<IEnumerable<BlockedTime>> GetAllAsync()
     {
         return await _context.BlockedTimes.ToListAsync();
     }
 
-    public async Task<IEnumerable<BlockedTimes>> GetByProviderIdAsync(Guid providerId)
+    public async Task<IEnumerable<BlockedTime>> GetByProviderIdAsync(Guid providerId)
     {
         return await _context.BlockedTimes
             .Where(b => b.ProviderId == providerId)
             .ToListAsync();
     }
 
-    public async Task<BlockedTimes?> GetByIdAsync(Guid id)
+    public async Task<BlockedTime?> GetByIdAsync(Guid id)
     {
         return await _context.BlockedTimes
             .FirstOrDefaultAsync(b => b.Id == id);

@@ -9,6 +9,7 @@ public class NotificationLogs
     public NotificationType Type { get; private set; }
     public DateTime SentAt { get; private set; }
     public NotificationStatus Status { get; private set; }
+    public Appointment Appointment { get; private set; }
 
     public NotificationLogs() { }
 
