@@ -1,8 +1,6 @@
-﻿// Project3.Infrastructure/Persistence/Configurations/EmailQueueConfiguration.cs
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Project3.Domain.Entities;
-using Project3.Domain.Enums;
 
 namespace Project3.Infrastructure.Persistence.Configurations;
 
