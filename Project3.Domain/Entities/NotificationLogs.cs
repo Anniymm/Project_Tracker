@@ -6,9 +6,9 @@ public class NotificationLogs
 {
     public Guid Id { get; private set; }
     public Guid AppointmentId { get; private set; }
-    public NotificationType Type { get; private set; }
+    public EmailNotificationType Type { get; private set; }
     public DateTime SentAt { get; private set; }
-    public NotificationStatus Status { get; private set; }
+    public EmailNotificationStatus Status { get; private set; }
     public Appointment Appointment { get; private set; }
 
     public NotificationLogs() { }
@@ -16,9 +16,9 @@ public class NotificationLogs
     public NotificationLogs(
         Guid id,
         Guid appointmentId,
-        NotificationType type,
+        EmailNotificationType type,
         DateTime sentAt,
-        NotificationStatus status)
+        EmailNotificationStatus status)
     {
         Id = id;
         AppointmentId = appointmentId;
@@ -28,8 +28,8 @@ public class NotificationLogs
     }
 
     public void Update(
-        NotificationType? type = null,
-        NotificationStatus? status = null,
+        EmailNotificationType? type = null,
+        EmailNotificationStatus? status = null,
         DateTime? sentAt = null)
     {
         Type = type ?? Type;

@@ -1,6 +1,6 @@
 ﻿namespace Project3.Domain.Enums;
 
-public enum NotificationStatus
+public enum EmailNotificationStatus
 {
     Pending = 1,
     Sent = 2,

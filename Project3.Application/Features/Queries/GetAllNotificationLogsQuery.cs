@@ -11,9 +11,9 @@ public sealed record GetAllNotificationLogsQuery()
 public sealed record GetNotificationLogsQueryResponse(
     Guid Id,
     Guid AppointmentId,
-    NotificationType Type,
+    EmailNotificationType Type,
     DateTime SentAt,
-    NotificationStatus Status
+    EmailNotificationStatus Status
 );
 
 public class GetAllNotificationLogsQueryHandler(IUnitOfWork _unitOfWork)

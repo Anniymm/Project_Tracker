@@ -1,6 +1,6 @@
 ﻿namespace Project3.Domain.Enums;
 
-public enum NotificationType
+public enum EmailNotificationType
 {
     Confirmation = 1,
     Reminder = 2,
