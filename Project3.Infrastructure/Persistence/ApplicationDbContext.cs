@@ -14,7 +14,6 @@ public class ApplicationDbContext : DbContext
      public DbSet<ServiceProvider> ServiceProvider => Set<ServiceProvider>();
      public DbSet<WorkingHour> WorkingHours => Set<WorkingHour>();
      public DbSet<BlockedTime> BlockedTimes => Set<BlockedTime>();
-     public DbSet<NotificationLogs> NotificationLogs => Set<NotificationLogs>();
      public  DbSet<EmailQueue> EmailQueue => Set<EmailQueue>();
 
      protected override void OnModelCreating(ModelBuilder modelBuilder)
