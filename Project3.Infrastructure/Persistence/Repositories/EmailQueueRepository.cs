@@ -17,23 +17,22 @@ public class EmailQueueRepository : IEmailQueueRepository
     public async Task AddAsync(EmailQueue email)
     {
         await _context.EmailQueue.AddAsync(email);
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(EmailQueue email)
+    public async Task UpdateAsync(EmailQueue email)
     {
         _context.EmailQueue.Update(email);
-        return Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<EmailQueue>> GetPendingDueAsync(
-        DateTimeOffset now,
-        CancellationToken cancellationToken)
+    public async Task<EmailQueue?> GetNextPendingAsync(DateTimeOffset now, CancellationToken cancellationToken)
     {
+        // ert pending gmailze rom imushaos
         return await _context.EmailQueue
-            .Where(x =>
-                x.ScheduledAt <= now &&
-                (x.Status == EmailNotificationStatus.Pending ||
-                 x.Status == EmailNotificationStatus.Failed))
-            .ToListAsync(cancellationToken);
+            .Where(e => e.Status == EmailNotificationStatus.Pending &&
+                        e.ScheduledAt <= now)
+            .OrderBy(e => e.ScheduledAt)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }
