@@ -8,12 +8,9 @@ namespace Project3.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<NotificationLogs> builder)
         {
-            builder.ToTable("notification_logs");
+            builder.ToTable("NotificationLogs", schema: "logging");
 
             builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Id)
-                .ValueGeneratedNever();
 
             builder.Property(x => x.AppointmentId)
                 .IsRequired();
@@ -24,13 +21,17 @@ namespace Project3.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Status)
                 .IsRequired();
 
-            builder.Property(x => x.SentAt)
+            builder.Property(x => x.FailureReason)
+                .HasMaxLength(1000); 
+
+            builder.Property(x => x.CreatedAt)
                 .IsRequired();
             
+
             builder.HasOne(x => x.Appointment)
-                .WithMany()
+                .WithMany() 
                 .HasForeignKey(x => x.AppointmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); 
         }
     }
 }
