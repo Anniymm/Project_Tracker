@@ -1,39 +1,40 @@
 ﻿using Project3.Domain.Enums;
 
 namespace Project3.Domain.Entities;
-
 public class NotificationLogs
 {
-    public Guid Id { get; private set; }
-    public Guid AppointmentId { get; private set; }
+    public Guid Id { get; private set; }              
+    public Guid AppointmentId { get; private set; }    
     public EmailNotificationType Type { get; private set; }
-    public DateTime SentAt { get; private set; }
     public EmailNotificationStatus Status { get; private set; }
-    public Appointment Appointment { get; private set; }
+    public string? FailureReason { get; private set; } 
+    public DateTime CreatedAt { get; private set; }   
+    public Appointment? Appointment { get; private set; }
+    private NotificationLogs() { } 
 
-    public NotificationLogs() { }
-
-    public NotificationLogs(
-        Guid id,
-        Guid appointmentId,
-        EmailNotificationType type,
-        DateTime sentAt,
-        EmailNotificationStatus status)
+  
+    public static NotificationLogs Success(Guid appointmentId, EmailNotificationType type)
     {
-        Id = id;
-        AppointmentId = appointmentId;
-        Type = type;
-        SentAt = sentAt;
-        Status = status;
+        return new NotificationLogs
+        {
+            Id = Guid.NewGuid(),
+            AppointmentId = appointmentId,
+            Type = type,
+            Status = EmailNotificationStatus.Sent,
+            CreatedAt = DateTime.UtcNow
+        };
     }
 
-    public void Update(
-        EmailNotificationType? type = null,
-        EmailNotificationStatus? status = null,
-        DateTime? sentAt = null)
+    public static NotificationLogs Failed(Guid appointmentId, EmailNotificationType type, string? failureReason)
     {
-        Type = type ?? Type;
-        Status = status ?? Status;
-        SentAt = sentAt ?? SentAt;
+        return new NotificationLogs
+        {
+            Id = Guid.NewGuid(),
+            AppointmentId = appointmentId,
+            Type = type,
+            Status = EmailNotificationStatus.Failed,
+            FailureReason = failureReason,
+            CreatedAt = DateTime.UtcNow
+        };
     }
 }

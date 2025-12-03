@@ -33,7 +33,6 @@ public class EmailQueue
         ScheduledAt = scheduledAt;
 
         Status = EmailNotificationStatus.Pending;
-        RetryCount = 0;
 
         Validate();
     }
