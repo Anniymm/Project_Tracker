@@ -12,30 +12,33 @@ public sealed record GetNotificationLogsQueryResponse(
     Guid Id,
     Guid AppointmentId,
     EmailNotificationType Type,
-    DateTime SentAt,
-    EmailNotificationStatus Status
+    EmailNotificationStatus Status,
+    string? FailureReason,
+    DateTime CreatedAt
 );
 
-public class GetAllNotificationLogsQueryHandler(IUnitOfWork _unitOfWork)
+public class GetAllNotificationLogsQueryHandler(INotificationLogsRepository _repo)
     : IRequestHandler<GetAllNotificationLogsQuery, Result<IEnumerable<GetNotificationLogsQueryResponse>>>
 {
     public async Task<Result<IEnumerable<GetNotificationLogsQueryResponse>>> Handle(
         GetAllNotificationLogsQuery request,
         CancellationToken cancellationToken)
     {
-        var logs = await _unitOfWork.NotificationLogs.GetAllAsync();
+        var logs = await _repo.GetAllAsync();
 
         if (logs is null || !logs.Any())
             return Result<IEnumerable<GetNotificationLogsQueryResponse>>.Failure("No notification logs found");
 
-        var response = logs.Select(
-            l => new GetNotificationLogsQueryResponse(
-            Id: l.Id,
-            AppointmentId: l.AppointmentId,
-            Type: l.Type,
-            SentAt: l.SentAt,
-            Status: l.Status
-        )).ToList();
+        var response = logs.Select(l =>
+            new GetNotificationLogsQueryResponse(
+                Id: l.Id,
+                AppointmentId: l.AppointmentId,
+                Type: l.Type,
+                Status: l.Status,
+                FailureReason: l.FailureReason,
+                CreatedAt: l.CreatedAt
+            )
+        ).ToList();
 
         return Result<IEnumerable<GetNotificationLogsQueryResponse>>.Success(response);
     }

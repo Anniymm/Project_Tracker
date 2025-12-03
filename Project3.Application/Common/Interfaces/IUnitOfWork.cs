@@ -15,7 +15,6 @@ public interface IUnitOfWork
     IServiceProviderRepository ServiceProviders { get; }
     IWorkingHourRepository WorkingHours { get; }
     IBlockedTimesRepository BlockedTimes { get; }
-    INotificationLogsRepository NotificationLogs { get; }
     IEmailQueueRepository EmailQueues { get; }
     
 
