@@ -21,3 +21,9 @@ public class LoggingDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
+
+// EmailQueueProcessor
+// ├─ Tries to send email
+// ├─ if success → NotificationLogs.Success()
+// ├─ if failure → NotificationLogs.Failed()
+// └─ Save using INotificationLogsRepository
