@@ -30,6 +30,7 @@ builder.Services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
 builder.Services.AddScoped<IBlockedTimesRepository, BlockedTimesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddHostedService<EmailSenderBackgroundService>();
 
 // Controllers

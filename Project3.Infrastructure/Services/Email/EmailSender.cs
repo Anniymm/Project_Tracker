@@ -88,7 +88,23 @@ public class EmailSender : IEmailSender
 
         await smtpClient.SendMailAsync(mailMessage, ct);
     }
-
+    
+    public async Task<bool> SendAppointmentRescheduledAsync(Appointment appointment, CancellationToken ct)
+    {
+        try
+        {
+            var subject = "Appointment Rescheduled";
+            var body = GetAppointmentRescheduledTemplate(appointment);
+        
+            await SendEmailAsync(appointment.CustomerEmail, subject, body, ct);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send appointment rescheduled email for appointment {AppointmentId}", appointment.Id);
+            return false;
+        }
+    }
     private string GetAppointmentConfirmationTemplate(Appointment appointment)
     {
         return $@"
@@ -201,6 +217,47 @@ public class EmailSender : IEmailSender
             </div>
             
             <p>If you would like to reschedule, please contact us.</p>
+        </div>
+        <div class='footer'>
+            <p>This is an automated message, please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>";
+    }
+    
+    private string GetAppointmentRescheduledTemplate(Appointment appointment)
+    {
+        return $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+        .header {{ background-color: #2196F3; color: white; padding: 20px; text-align: center; }}
+        .content {{ background-color: #f9f9f9; padding: 20px; }}
+        .details {{ background-color: white; padding: 15px; margin: 15px 0; border-left: 4px solid #2196F3; }}
+        .footer {{ text-align: center; padding: 20px; color: #777; font-size: 12px; }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>Appointment Rescheduled</h1>
+        </div>
+        <div class='content'>
+            <p>Dear {appointment.CustomerName},</p>
+            <p>Your appointment has been successfully rescheduled.</p>
+            
+            <div class='details'>
+                <h3>New Appointment Details:</h3>
+                <p><strong>Date & Time:</strong> {appointment.AppointmentDate:MMMM dd, yyyy} at {appointment.StartTime:hh:mm tt}</p>
+                <p><strong>Duration:</strong> {appointment.StartTime} - {appointment.EndTime}</p>
+                <p><strong>Appointment ID:</strong> {appointment.Id}</p>
+            </div>
+            
+            <p>If you need to make any further changes, please contact us.</p>
         </div>
         <div class='footer'>
             <p>This is an automated message, please do not reply to this email.</p>

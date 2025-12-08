@@ -41,13 +41,16 @@ public class EmailService : IEmailService
                 {
                     EmailNotificationType.Confirmation => 
                         await _emailSender.SendAppointmentConfirmationAsync(emailQueue.Appointment, cancellationToken),
-                    
+    
                     EmailNotificationType.Reminder => 
                         await _emailSender.SendAppointmentReminderAsync(emailQueue.Appointment, cancellationToken),
-                    
+    
                     EmailNotificationType.Cancellation => 
                         await _emailSender.SendAppointmentCancellationAsync(emailQueue.Appointment, cancellationToken),
-                    
+    
+                    EmailNotificationType.Rescheduled => 
+                        await _emailSender.SendAppointmentRescheduledAsync(emailQueue.Appointment, cancellationToken),
+    
                     _ => throw new NotImplementedException($"Email type {emailQueue.EmailNotificationType} not implemented")
                 };
 

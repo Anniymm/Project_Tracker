@@ -4,5 +4,6 @@ public enum EmailNotificationType
 {
     Confirmation = 1,
     Reminder = 2,
-    Cancellation = 3
+    Cancellation = 3,
+    Rescheduled = 4
 }
