@@ -2,6 +2,7 @@
 using MediatR;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
+using Project3.Domain.Entities;
 using Project3.Domain.Enums;
 
 namespace Project3.Application.Features.Commands;
@@ -44,11 +45,10 @@ public sealed class CancelAppointmentHandler
         if (appointment.Status == AppointmentStatus.completed)
             return Result.Failure("Completed appointments cannot be cancelled.");
 
-        
         if (appointment.Status == AppointmentStatus.no_show)
             return Result.Failure("A no-show appointment cannot be cancelled.");
 
-        
+        // qppointmentis statusis update
         appointment.Update(
             appointmentDate: null,
             startTime: null,
@@ -59,10 +59,17 @@ public sealed class CancelAppointmentHandler
             recurrenceRule: null
         );
 
+        // cancellis queue 
+        var cancellationEmail = new EmailQueue(
+            id: Guid.NewGuid(),
+            appointmentId: appointment.Id,
+            toEmail: appointment.CustomerEmail,
+            notificationType: EmailNotificationType.Cancellation,
+            scheduledAt: DateTimeOffset.UtcNow 
+        );
+        await _unitOfWork.EmailQueues.AddAsync(cancellationEmail);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success("Appointment cancelled successfully.");
     }
 }
-
-    

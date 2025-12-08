@@ -86,9 +86,33 @@ public sealed class CreateAppointmentHandler
             updatedAt: DateTime.UtcNow
         );
 
-
         await _unitOfWork.Appointments.AddAsync(appointment);
 
+        // confirmation email rom gavushvat queueshi
+        var confirmationEmail = new EmailQueue(
+            id: Guid.NewGuid(),
+            appointmentId: appointment.Id,
+            toEmail: appointment.CustomerEmail,
+            notificationType: EmailNotificationType.Confirmation,
+            scheduledAt: DateTimeOffset.UtcNow // egreve rom gag=igzavnos
+        );
+        await _unitOfWork.EmailQueues.AddAsync(confirmationEmail);
+
+        // Queue shi rom davamatot d=reminder email - 1 dghit adre gaigzanos
+        var appointmentDateTime = request.AppointmentDate.ToDateTime(request.StartTime);
+        var reminderScheduledAt = new DateTimeOffset(appointmentDateTime, TimeSpan.Zero).AddHours(-24);
+        
+        if (reminderScheduledAt > DateTimeOffset.UtcNow)
+        {
+            var reminderEmail = new EmailQueue(
+                id: Guid.NewGuid(),
+                appointmentId: appointment.Id,
+                toEmail: appointment.CustomerEmail,
+                notificationType: EmailNotificationType.Reminder,
+                scheduledAt: reminderScheduledAt
+            );
+            await _unitOfWork.EmailQueues.AddAsync(reminderEmail);
+        }
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success("Appointment created successfully");
