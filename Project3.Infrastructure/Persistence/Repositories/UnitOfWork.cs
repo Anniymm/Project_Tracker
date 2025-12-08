@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
         EmailQueues = new EmailQueueRepository(context);
     }
 
+    
     public IAppointmentRepository Appointments { get; }
     public IServiceProviderRepository ServiceProviders { get; }
     public IWorkingHourRepository WorkingHours { get; }

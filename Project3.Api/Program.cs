@@ -4,6 +4,7 @@ using Project3.Application.Common.Interfaces;
 using Project3.Infrastructure.Persistence;
 using Project3.Infrastructure.Persistence.Repositories;
 using Project3.Infrastructure.Persistence.Repositories.Appointments;
+using Project3.Infrastructure.Services.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository
 builder.Services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
 builder.Services.AddScoped<IBlockedTimesRepository, BlockedTimesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddHostedService<EmailSenderBackgroundService>();
 
 // Controllers
 builder.Services.AddControllers();
