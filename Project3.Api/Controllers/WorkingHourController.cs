@@ -28,6 +28,7 @@ public class WorkingHoursController(ISender sender) : ApiController(sender)
         return await Handle(command);
     }
 
+    
     [HttpDelete("{id:guid}")]
     public async Task<IResult> Delete(Guid id)
     {
