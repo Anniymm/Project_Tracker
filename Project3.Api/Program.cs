@@ -8,7 +8,7 @@ using Project3.Infrastructure.Services.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//  Swagger / OpenAPI
+// Swagger / OpenAPI
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
@@ -17,20 +17,33 @@ builder.Services.AddApplicationServices();
 
 // DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-        .UseSnakeCaseNamingConvention());
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        // .UseSnakeCaseNamingConvention());
 
 builder.Services.AddDbContext<LoggingDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Email Settings
+var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
+if (emailSettings != null)
+{
+    builder.Services.AddSingleton(emailSettings);
+}
 
 // Repositories
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
 builder.Services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
 builder.Services.AddScoped<IBlockedTimesRepository, BlockedTimesRepository>();
+builder.Services.AddScoped<IEmailQueueRepository, EmailQueueRepository>(); // ADD THIS
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<INotificationLogsRepository, NotificationLogsRepository>();
+
+// Services
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+// Background Service
 builder.Services.AddHostedService<EmailSenderBackgroundService>();
 
 // Controllers

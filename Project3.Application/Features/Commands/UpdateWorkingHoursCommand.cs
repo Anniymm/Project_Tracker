@@ -6,7 +6,11 @@ using Project3.Domain.Common.Response;
 
 namespace Project3.Application.Features.Commands;
 
-public sealed record UpdateWorkingHoursCommand(UpdateWorkingHoursDto Dto)
+public sealed record UpdateWorkingHoursCommand(    Guid Id,
+    int? DayOfWeek,
+    TimeOnly? StartTime,
+    TimeOnly? EndTime,
+    bool? IsActive)
     : IRequest<Result>;
 
 public sealed class UpdateWorkingHoursCommandValidator 
@@ -14,22 +18,22 @@ public sealed class UpdateWorkingHoursCommandValidator
 {
     public UpdateWorkingHoursCommandValidator()
     {
-        RuleFor(x => x.Dto.Id)
+        RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Working hour Id is required.");
 
-        When(x => x.Dto.DayOfWeek.HasValue, () =>
+        When(x => x.DayOfWeek.HasValue, () =>
         {
-            RuleFor(x => x.Dto.DayOfWeek)
+            RuleFor(x => x.DayOfWeek)
                 .InclusiveBetween(0, 6)
                 .WithMessage("DayOfWeek must be between 0 and 6.");
         });
 
         // validaciebi marto im dros gaaketos roca start da end timebi orive arsebobs
-        When(x => x.Dto.StartTime.HasValue && x.Dto.EndTime.HasValue, () =>
+        When(x => x.StartTime.HasValue && x.EndTime.HasValue, () =>
         {
-            RuleFor(x => x.Dto.StartTime)
-                .LessThan(x => x.Dto.EndTime)
+            RuleFor(x => x.StartTime)
+                .LessThan(x => x.EndTime)
                 .WithMessage("Start time must be before end time.");
         });
     }
@@ -49,15 +53,13 @@ public sealed class UpdateWorkingHoursCommandHandler
         UpdateWorkingHoursCommand request,
         CancellationToken cancellationToken)
     {
-        var dto = request.Dto;
-
-        var workingHour = await _unitOfWork.WorkingHours.GetByIdAsync(dto.Id);
+        var workingHour = await _unitOfWork.WorkingHours.GetByIdAsync(request.Id);
         if (workingHour is null)
             return Result.Failure("Working hour not found.");
 
-        var newDay = dto.DayOfWeek ?? workingHour.DayOfWeek;
-        var newStart = dto.StartTime ?? workingHour.StartTime;
-        var newEnd = dto.EndTime ?? workingHour.EndTime;
+        var newDay = request.DayOfWeek ?? workingHour.DayOfWeek;
+        var newStart = request.StartTime ?? workingHour.StartTime;
+        var newEnd = request.EndTime ?? workingHour.EndTime;
 
         var existingForDay = await _unitOfWork.WorkingHours
             .GetAllByProviderAndDayAsync(workingHour.ProviderId, newDay);
@@ -71,10 +73,10 @@ public sealed class UpdateWorkingHoursCommandHandler
             return Result.Failure("Updated working hour overlaps another working hour.");
 
         workingHour.Update(
-            dayOfWeek: dto.DayOfWeek,
-            startTime: dto.StartTime,
-            endTime: dto.EndTime,
-            isActive: dto.IsActive
+            dayOfWeek: request.DayOfWeek,
+            startTime: request.StartTime,
+            endTime: request.EndTime,
+            isActive: request.IsActive
         );
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

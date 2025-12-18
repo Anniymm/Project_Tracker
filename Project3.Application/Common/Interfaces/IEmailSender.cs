@@ -8,5 +8,4 @@ public interface IEmailSender
     Task<bool> SendAppointmentReminderAsync(Appointment appointment, CancellationToken ct);
     Task<bool> SendAppointmentCancellationAsync(Appointment appointment, CancellationToken ct);
     Task<bool> SendAppointmentRescheduledAsync(Appointment appointment, CancellationToken ct); // Add this
-
 }

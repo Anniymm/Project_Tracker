@@ -90,7 +90,104 @@ namespace Project3.Infrastructure.Migrations
                     b.ToTable("appointment", (string)null);
                 });
 
-            modelBuilder.Entity("Project3.Domain.Entities.ServiceProviders", b =>
+            modelBuilder.Entity("Project3.Domain.Entities.BlockedTime", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProviderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProviderId");
+
+                    b.ToTable("blocked_times", (string)null);
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.EmailQueue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("EmailNotificationType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FailureReason")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("ScheduledAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("SentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ToEmail")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.ToTable("email_queue", (string)null);
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.NotificationLogs", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.ToTable("NotificationLogs", "logging");
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.ServiceProvider", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -121,13 +218,15 @@ namespace Project3.Infrastructure.Migrations
                     b.ToTable("service_providers", (string)null);
                 });
 
-            modelBuilder.Entity("Project3.Domain.Entities.WorkingHours", b =>
+            modelBuilder.Entity("Project3.Domain.Entities.WorkingHour", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<int>("DayOfWeek")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("day_of_week");
 
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time without time zone")
@@ -138,7 +237,8 @@ namespace Project3.Infrastructure.Migrations
                         .HasColumnName("is_active");
 
                     b.Property<Guid>("ProviderId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("provider_id");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time without time zone")
@@ -148,18 +248,21 @@ namespace Project3.Infrastructure.Migrations
 
                     b.HasIndex("ProviderId");
 
-                    b.ToTable("working_hours", (string)null);
+                    b.ToTable("working_hours", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_working_hours_start_before_end", "\"start_time\" < \"end_time\"");
+                        });
                 });
 
             modelBuilder.Entity("Project3.Domain.Entities.Appointment", b =>
                 {
-                    b.HasOne("Project3.Domain.Entities.ServiceProviders", null)
+                    b.HasOne("Project3.Domain.Entities.ServiceProvider", null)
                         .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project3.Domain.Entities.ServiceProviders", "ServiceProvider")
+                    b.HasOne("Project3.Domain.Entities.ServiceProvider", "ServiceProvider")
                         .WithMany()
                         .HasForeignKey("ServiceProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -168,9 +271,42 @@ namespace Project3.Infrastructure.Migrations
                     b.Navigation("ServiceProvider");
                 });
 
-            modelBuilder.Entity("Project3.Domain.Entities.WorkingHours", b =>
+            modelBuilder.Entity("Project3.Domain.Entities.BlockedTime", b =>
                 {
-                    b.HasOne("Project3.Domain.Entities.ServiceProviders", null)
+                    b.HasOne("Project3.Domain.Entities.ServiceProvider", "ServiceProvider")
+                        .WithMany()
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceProvider");
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.EmailQueue", b =>
+                {
+                    b.HasOne("Project3.Domain.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.NotificationLogs", b =>
+                {
+                    b.HasOne("Project3.Domain.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+                });
+
+            modelBuilder.Entity("Project3.Domain.Entities.WorkingHour", b =>
+                {
+                    b.HasOne("Project3.Domain.Entities.ServiceProvider", null)
                         .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)

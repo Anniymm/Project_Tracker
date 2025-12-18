@@ -7,11 +7,11 @@ using Project3.Domain.Common.Response;
 
 namespace Project3.Application.Features.Queries;
 
-public sealed record GetWorkingHoursQuery(Guid ProviderId)
+public sealed record GetWorkingHoursByProviderQuery(Guid ProviderId)
     : IRequest<Result<List<GetWorkingHoursDto>>>;
 
 public sealed class GetWorkingHoursQueryValidator 
-    : AbstractValidator<GetWorkingHoursQuery>
+    : AbstractValidator<GetWorkingHoursByProviderQuery>
 {
     public GetWorkingHoursQueryValidator()
     {
@@ -22,7 +22,7 @@ public sealed class GetWorkingHoursQueryValidator
 }
 
 public sealed class GetWorkingHoursQueryHandler
-    : IRequestHandler<GetWorkingHoursQuery, Result<List<GetWorkingHoursDto>>>
+    : IRequestHandler<GetWorkingHoursByProviderQuery, Result<List<GetWorkingHoursDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ public sealed class GetWorkingHoursQueryHandler
     }
 
     public async Task<Result<List<GetWorkingHoursDto>>> Handle(
-        GetWorkingHoursQuery request,
+        GetWorkingHoursByProviderQuery request,
         CancellationToken cancellationToken)
     {
         var provider = await _unitOfWork.ServiceProviders

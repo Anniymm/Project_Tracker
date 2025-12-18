@@ -20,7 +20,7 @@ public sealed class DeleteWorkingHoursHandler
     public async Task<Result> Handle(DeleteWorkingHoursCommand request, CancellationToken cancellationToken)
     {
         await _unitOfWork.WorkingHours.DeleteAsync(request.Id);
-        await _unitOfWork.SaveChangesAsync((cancellationToken));
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return Result.Success("Working hours deleted successfully");
     }

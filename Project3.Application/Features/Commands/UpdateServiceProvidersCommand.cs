@@ -7,7 +7,11 @@ using Project3.Domain.Common.Response;
 namespace Project3.Application.Features.Commands;
 
 
-public sealed record UpdateServiceProviderCommand(UpdateServiceProviderDto Dto)
+public sealed record UpdateServiceProviderCommand(    Guid Id,
+    string? Name,
+    string? Email,
+    string? Specialty,
+    bool? IsActive)
     : IRequest<Result>;
 
 public sealed class UpdateServiceProviderCommandValidator
@@ -15,27 +19,27 @@ public sealed class UpdateServiceProviderCommandValidator
 {
     public UpdateServiceProviderCommandValidator()
     {
-        RuleFor(x => x.Dto.Id)
+        RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Service provider Id is required.");
 
-        When(x => x.Dto.Name is not null, () =>
+        When(x => x.Name is not null, () =>
         {
-            RuleFor(x => x.Dto.Name)
+            RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Name cannot be empty");
         });
 
-        When(x => x.Dto.Email is not null, () =>
+        When(x => x.Email is not null, () =>
         {
-            RuleFor(x => x.Dto.Email)
+            RuleFor(x => x.Email)
                 .EmailAddress()
                 .WithMessage("Email must be a valid");
         });
 
-        When(x => x.Dto.Specialty is not null, () =>
+        When(x => x.Specialty is not null, () =>
         {
-            RuleFor(x => x.Dto.Specialty)
+            RuleFor(x => x.Specialty)
                 .NotEmpty()
                 .WithMessage("Specialty cannot be empty");
         });
@@ -57,18 +61,16 @@ public sealed class UpdateServiceProviderCommandHandler
         UpdateServiceProviderCommand request,
         CancellationToken cancellationToken)
     {
-        var dto = request.Dto;
-
-        var provider = await _unitOfWork.ServiceProviders.GetByIdAsync(dto.Id);
+        var provider = await _unitOfWork.ServiceProviders.GetByIdAsync(request.Id);
 
         if (provider is null)
             return Result.Failure("Service provider not found.");
 
         provider.Update(
-            name: dto.Name,
-            email: dto.Email,
-            specialty: dto.Specialty,
-            isActive: dto.IsActive
+            name: request.Name,
+            email: request.Email,
+            specialty: request.Specialty,
+            isActive: request.IsActive
         );
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

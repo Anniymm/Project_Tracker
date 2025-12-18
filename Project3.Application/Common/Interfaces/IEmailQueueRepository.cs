@@ -2,7 +2,6 @@
 
 namespace Project3.Application.Common.Interfaces;
 
-
 public interface IEmailQueueRepository
 {
     Task AddAsync(EmailQueue email);
