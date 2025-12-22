@@ -1,42 +1,51 @@
-﻿using AutoMapper;
-using FluentValidation;
-using MediatR;
-using Project3.Application.Common.DTOs;
+﻿using MediatR;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 
 namespace Project3.Application.Features.Queries;
 
-
 public sealed record GetServiceProvidersQuery()
-    : IRequest<Result<List<GetServiceProvidersDto>>>;
+    : IRequest<Result<List<ServiceProviderResponse>>>;
 
+public sealed record ServiceProviderResponse(
+    Guid Id,
+    string Name,
+    string Email,
+    string Specialty,
+    bool IsActive,
+    DateTime CreatedAt
+);
 
 public sealed class GetServiceProvidersQueryHandler
-    : IRequestHandler<GetServiceProvidersQuery, Result<List<GetServiceProvidersDto>>>
+    : IRequestHandler<GetServiceProvidersQuery, Result<List<ServiceProviderResponse>>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
-    public GetServiceProvidersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetServiceProvidersQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
-    public async Task<Result<List<GetServiceProvidersDto>>> Handle(
+    public async Task<Result<List<ServiceProviderResponse>>> Handle(
         GetServiceProvidersQuery request,
         CancellationToken cancellationToken)
     {
         var providers = await _unitOfWork.ServiceProviders.GetAllAsync();
 
         if (providers.Count == 0)
-            return Result<List<GetServiceProvidersDto>>
-                .Success(new List<GetServiceProvidersDto>(), "No providers found");
+            return Result<List<ServiceProviderResponse>>
+                .Success(new List<ServiceProviderResponse>(), "No providers found");
 
-        var dtos = _mapper.Map<List<GetServiceProvidersDto>>(providers);
+        var response = providers.Select(p => new ServiceProviderResponse(
+            p.Id,
+            p.Name,
+            p.Email,
+            p.Specialty,
+            p.IsActive,
+            p.CreatedAt
+        )).ToList();
 
-        return Result<List<GetServiceProvidersDto>>
-            .Success(dtos, "Service providers retrieved successfully");
+        return Result<List<ServiceProviderResponse>>
+            .Success(response, "Service providers retrieved successfully");
     }
 }

@@ -10,9 +10,9 @@ C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.AssemblyInfo.cs
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.sourcelink.json
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.6E46B3C1.Up2Date
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.dll
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\refint\Project3.Infrastructure.dll
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.pdb
 C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\ref\Project3.Infrastructure.dll
-C:\Users\PC\Desktop\project_3\Project3.Infrastructure\obj\Debug\net9.0\Project3.Infrastructure.sourcelink.json

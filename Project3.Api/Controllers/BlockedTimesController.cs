@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Project3.Application.Common.DTOs;
 using Project3.Application.Features.Commands;
 using Project3.Application.Features.Queries;
 

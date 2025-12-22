@@ -8,9 +8,9 @@ C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.App
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.AssemblyInfoInputs.cache
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.AssemblyInfo.cs
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.csproj.CoreCompileInputs.cache
+C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.sourcelink.json
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.CFF12796.Up2Date
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.dll
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\refint\Project3.Application.dll
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.pdb
 C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\ref\Project3.Application.dll
-C:\Users\PC\Desktop\project_3\Project3.Application\obj\Debug\net9.0\Project3.Application.sourcelink.json

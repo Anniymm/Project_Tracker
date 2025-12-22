@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR;
-using AutoMapper;
+using System.Reflection;
 
 namespace Project3.Application;
 
@@ -8,11 +8,13 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        // MediatR 
-        services.AddMediatR(typeof(ApplicationServiceRegistration).Assembly);
+        var assembly = Assembly.GetExecutingAssembly();
+
+        // MediatR
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
         
         // AutoMapper
-        services.AddAutoMapper(typeof(ApplicationServiceRegistration).Assembly);
+        services.AddAutoMapper(typeof(ApplicationServiceRegistration));
 
         return services;
     }

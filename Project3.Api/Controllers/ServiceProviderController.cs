@@ -14,29 +14,23 @@ public class ServiceProviderController(ISender sender) : ApiController(sender)
         return await Handle(command);
     }
     
-    // [HttpPut]
-    // public async Task<IResult> PutProviders([FromBody] RescheduleAppointmentCommand command)
-    // {
-    //     return await Handle(command);
-    // }
-    
     [HttpDelete("provider/{Id}")]
     public async Task<IResult> DeleteProvider(Guid Id)
     {
         return await Handle(new DeleteServiceProviderCommand(Id));
     }
     
-    
     [HttpGet]
     public async Task<IResult> GetAllProviders()
     {
-        return await Handle(new GetServiceProvidersQuery());
+        return await Handle<GetServiceProvidersQuery, List<ServiceProviderResponse>>(
+            new GetServiceProvidersQuery());
     }
-    
     
     [HttpGet("provider/{id}")]
     public async Task<IResult> GetProviderById(Guid id)
     {
-        return await Handle(new GetServiceProviderByIdQuery(id));
-  }
+        return await Handle<GetServiceProviderByIdQuery, GetProvidersQueryResponse>(
+            new GetServiceProviderByIdQuery(id));
+    }
 }
