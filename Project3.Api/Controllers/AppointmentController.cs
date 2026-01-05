@@ -10,7 +10,9 @@ namespace Project3.Api.Controllers;
 [Produces("application/json")]
 public class AppointmentsController(ISender sender) : ApiController(sender)
 {
-
+    // sheidzleba ProducesResponseType(typeof(Result) aq pirdapir typeofshi
+    // response recordi gadavawodo -> rogorc working hourshi davwere
+    
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
@@ -39,7 +41,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     
 
     [HttpGet]
-    [ProducesResponseType(typeof(Result<List<GetAppointmentQueryResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<List<GetAppointmentQueryResponsed>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> GetAllAppointments()
     {
