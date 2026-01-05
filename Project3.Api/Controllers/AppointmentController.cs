@@ -22,7 +22,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     
     
     [HttpDelete("{appointmentId}")]
-    public async Task<IResult> DeleteAppointment(Guid appointmentId, string reason)
+    public async Task<IResult> DeleteAppointment(Guid appointmentId, string reason) 
     {
         return await Handle(new CancelAppointmentCommand(appointmentId, reason));
     }

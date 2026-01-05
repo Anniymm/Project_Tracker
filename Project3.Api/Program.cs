@@ -24,7 +24,7 @@ builder.Services.AddDbContext<LoggingDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Email Settings
-var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
+var emailSettings = builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>();
 if (emailSettings != null)
 {
     builder.Services.AddSingleton(emailSettings);

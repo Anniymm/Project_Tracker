@@ -20,7 +20,6 @@ public class BlockedTimesController(ISender sender) : ApiController(sender)
     public async Task<IResult> Update([FromBody] UpdateBlockedTimeCommand command)
         =>  await Handle(command);
     
-    
     [HttpDelete("{id:guid}")]
     public async Task<IResult> Delete(Guid id) 
         => await Handle(new DeleteBlockedTimeCommand(id));

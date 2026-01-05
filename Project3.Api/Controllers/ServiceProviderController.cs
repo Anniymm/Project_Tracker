@@ -20,7 +20,7 @@ public class ServiceProviderController(ISender sender) : ApiController(sender)
         return await Handle(new DeleteServiceProviderCommand(Id));
     }
     
-    [HttpGet]
+    [HttpGet("get-all")]
     public async Task<IResult> GetAllProviders()
     {
         return await Handle<GetServiceProvidersQuery, List<ServiceProviderResponse>>(
