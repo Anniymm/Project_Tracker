@@ -8,3 +8,5 @@ public sealed record EmailNotificationJob(
 
 // queue mwhirdeba rom email jobebi background workers gadasces, 
 // dauyovnebliv rom ar gaushvas 
+
+// giweria, kargi gogo xar

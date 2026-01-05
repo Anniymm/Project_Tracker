@@ -59,6 +59,10 @@ public class EmailQueue
     {
         if (AppointmentId == Guid.Empty)
             throw new Exception("Appointment Id is required");
+        
+        //error middlewarebit unda errorebis ambebi
+        
+        // TODO: https://www.youtube.com/watch?v=rXdsm9R5TR0&t=156s
         if (string.IsNullOrEmpty(ToEmail))
             throw new Exception("To Email is required");
     }

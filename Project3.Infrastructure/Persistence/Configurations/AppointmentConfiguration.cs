@@ -14,7 +14,6 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
         
-        
         builder.Property(x => x.ProviderId)
             .IsRequired();
             
@@ -45,7 +44,6 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         
         builder.Property(x => x.EndTime)
             .IsRequired();
-
 
         builder.Property(x => x.Status)
             .IsRequired()

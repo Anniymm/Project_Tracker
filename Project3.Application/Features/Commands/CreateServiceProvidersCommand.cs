@@ -36,7 +36,6 @@ public sealed class CreateServiceProviderHandler
 
     public async Task<Result> Handle(CreateServiceProviderCommand request, CancellationToken cancellationToken)
     {
-
         var provider = new ServiceProvider(
             Guid.NewGuid(),
             request.Name,

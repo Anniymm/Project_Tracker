@@ -6,7 +6,8 @@ using Project3.Domain.Common.Response;
 
 namespace Project3.Application.Features.Commands;
 
-public sealed record UpdateWorkingHoursCommand(    Guid Id,
+public sealed record UpdateWorkingHoursCommand(
+    Guid Id,
     int? DayOfWeek,
     TimeOnly? StartTime,
     TimeOnly? EndTime,

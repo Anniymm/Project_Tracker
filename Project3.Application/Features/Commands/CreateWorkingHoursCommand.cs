@@ -1,18 +1,18 @@
 ﻿using FluentValidation;
 using MediatR;
-using Project3.Application.Common.DTOs;
 using Project3.Application.Common.Interfaces;
 using Project3.Domain.Common.Response;
 using Project3.Domain.Entities;
 
 namespace Project3.Application.Features.Commands;
 
-public sealed record CreateWorkingHoursCommand(Guid ProviderId,
+public sealed record CreateWorkingHoursCommand(
+    Guid ProviderId,
     int DayOfWeek,
     TimeOnly StartTime,
     TimeOnly EndTime,
-    bool IsActive)
-    : IRequest<Result<Guid>>;
+    bool IsActive = true
+) : IRequest<Result>;
 
 public sealed class CreateWorkingHoursCommandValidator 
     : AbstractValidator<CreateWorkingHoursCommand>
@@ -21,11 +21,11 @@ public sealed class CreateWorkingHoursCommandValidator
     {
         RuleFor(x => x.ProviderId)
             .NotEmpty()
-            .WithMessage("Provider id cannot be empty");
+            .WithMessage("Provider ID is required");
 
         RuleFor(x => x.DayOfWeek)
             .InclusiveBetween(0, 6)
-            .WithMessage("DayOfWeek must be between 0 and 6");
+            .WithMessage("Day of week must be between 0 (Sunday) and 6 (Saturday)");
 
         RuleFor(x => x.StartTime)
             .NotEmpty()
@@ -33,45 +33,43 @@ public sealed class CreateWorkingHoursCommandValidator
 
         RuleFor(x => x.EndTime)
             .NotEmpty()
-            .WithMessage("End time is required");
-
-        RuleFor(x => x.StartTime)
-            .LessThan(x => x.EndTime)
-            .WithMessage("Start time must be before end time");
+            .WithMessage("End time is required.")
+            .GreaterThan(x => x.StartTime)
+            .WithMessage("End time must be after start time");
     }
 }
 
-// primary consturctori gamoiyene chemo lamazo zangushka
-public sealed class CreateWorkingHoursCommandHandler(IUnitOfWork unitOfWork)
-    : IRequestHandler<CreateWorkingHoursCommand, Result<Guid>>
+public sealed class CreateWorkingHoursCommandHandler 
+    : IRequestHandler<CreateWorkingHoursCommand, Result>
 {
-    // private readonly IUnitOfWork _unitOfWork;
-    //
-    // public CreateWorkingHoursCommandHandler(IUnitOfWork unitOfWork)
-    // {
-    //     _unitOfWork = unitOfWork;
-    // }
+    private readonly IUnitOfWork _unitOfWork;
 
-    public async Task<Result<Guid>> Handle(
-        CreateWorkingHoursCommand request,
+    public CreateWorkingHoursCommandHandler(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<Result> Handle(
+        CreateWorkingHoursCommand request, 
         CancellationToken cancellationToken)
     {
-        
-        var provider = await unitOfWork.ServiceProviders
-            .GetByIdAsync(request.ProviderId);
 
-        if (provider is null)
-            return Result<Guid>.Failure("Provider not found");
+        var provider = await _unitOfWork.ServiceProviders.GetByIdAsync(request.ProviderId);
+        if (provider == null)
+            return Result.Failure("Service provider not found");
 
-        var existingForDay = await unitOfWork.WorkingHours
+        // droebis overlapis shemowmeba
+        var existingHours = await _unitOfWork.WorkingHours
             .GetAllByProviderAndDayAsync(request.ProviderId, request.DayOfWeek);
 
-        var overlaps = existingForDay.Any(x =>
-            x.StartTime < request.EndTime &&
-            x.EndTime > request.StartTime);
-
-        if (overlaps)
-            return Result<Guid>.Failure("Working hour overlaps an existing working hour");
+        foreach (var existing in existingHours.Where(x => x.IsActive))
+        {
+            bool overlaps = request.StartTime < existing.EndTime && 
+                          request.EndTime > existing.StartTime;
+            
+            if (overlaps)
+                return Result.Failure("Working hours overlap with existing hours for this day");
+        }
 
         var workingHour = new WorkingHour(
             id: Guid.NewGuid(),
@@ -82,12 +80,9 @@ public sealed class CreateWorkingHoursCommandHandler(IUnitOfWork unitOfWork)
             isActive: request.IsActive
         );
 
-        await unitOfWork.WorkingHours.AddAsync(workingHour);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.WorkingHours.AddAsync(workingHour);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<Guid>.Success(
-            workingHour.Id,
-            "Working hour created successfully"
-        );
+        return Result.Success("Working hour created successfully");
     }
 }

@@ -35,7 +35,7 @@ public class GetAllAppointmentsQueryHandler(IUnitOfWork _unitOfWork)
     {
         var appointments = await _unitOfWork.Appointments.GetAllAsync();
 
-        if (appointments is null || !appointments.Any())
+        if (appointments is [] || !appointments.Any())
             return Result<List<GetAppointmentQueryResponsed>>.Failure("No appointments found.");
 
         var response = appointments.Select(a => new GetAppointmentQueryResponsed(

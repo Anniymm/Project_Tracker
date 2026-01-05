@@ -29,24 +29,37 @@ public sealed class CancelAppointmentHandler
     : IRequestHandler<CancelAppointmentCommand, Result>
 {
     private readonly IUnitOfWork _unitOfWork;
+    // private readonly IValidator<CancelAppointmentCommand> _validator;
 
-    public CancelAppointmentHandler(IUnitOfWork unitOfWork)
+    public CancelAppointmentHandler(
+        IUnitOfWork unitOfWork)
+        // IValidator<CancelAppointmentCommand> validator)
     {
         _unitOfWork = unitOfWork;
+        // _validator = validator;
     }
 
     public async Task<Result> Handle(CancelAppointmentCommand request, CancellationToken cancellationToken)
     {
+        
+        // TODO: validaciebis damateba yvela handlershi 
+        /*
+         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        
+        if (!validationResult.IsValid)
+            return Result.Failure($"Validation error: {validationResult.Errors}");
+            */
+        
         var appointment = await _unitOfWork.Appointments.GetByIdAsync(request.AppointmentId);
 
         if (appointment is null)
-            return Result.Failure("Appointment not found.");
+            return Result.Failure("Appointment not found");
         
         if (appointment.Status == AppointmentStatus.completed)
-            return Result.Failure("Completed appointments cannot be cancelled.");
+            return Result.Failure("Completed appointments cannot be cancelled");
 
         if (appointment.Status == AppointmentStatus.no_show)
-            return Result.Failure("A no-show appointment cannot be cancelled.");
+            return Result.Failure("A no-show appointment cannot be cancelled");
 
         // qppointmentis statusis update
         appointment.Update(

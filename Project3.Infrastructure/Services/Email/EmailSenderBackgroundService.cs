@@ -24,6 +24,9 @@ public class EmailSenderBackgroundService : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
+            
+            // TODO: ProcessPendingEmailsAsync-s logika unda gqondes serviceshi, radgan eg business logikaa 
+            // da unda iyos applicationshi 
             try
             {
                 using var scope = _serviceProvider.CreateScope();

@@ -26,6 +26,7 @@ public class WorkingHourRepository : IWorkingHourRepository
 
         if (workingHour != null)
             _context.WorkingHours.Remove(workingHour);
+        // tu null aris mashin ra xdeba? rogor unda gavagebinot users eg information, pawuk?
     }
 
     public Task UpdateAsync(WorkingHour workingHour)
