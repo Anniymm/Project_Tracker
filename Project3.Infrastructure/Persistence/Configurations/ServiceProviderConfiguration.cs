@@ -32,5 +32,13 @@ public class ServiceProviderConfiguration : IEntityTypeConfiguration<ServiceProv
 
         builder.Property(x => x.CreatedAt)
             .IsRequired();
+        
+        builder.HasMany<Appointment>()
+            .WithOne(a => a.ServiceProvider)
+            .HasForeignKey(a => a.ProviderId)
+            .HasConstraintName("FK_appointment_service_providers_ProviderId")
+            .OnDelete(DeleteBehavior.Restrict);
+    
+        
     }
 }

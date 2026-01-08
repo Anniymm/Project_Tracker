@@ -16,15 +16,5 @@
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Error occurred while getting package vulnerability data: No such host is known. (api.nuget.org:443)",
-      "projectPath": "C:\\Users\\PC\\Desktop\\project_3\\Project3.Application\\Project3.Application.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\PC\\Desktop\\project_3\\Project3.Application\\Project3.Application.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

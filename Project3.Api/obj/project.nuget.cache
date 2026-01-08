@@ -82,15 +82,5 @@
     "C:\\Users\\PC\\.nuget\\packages\\system.text.json\\9.0.1\\system.text.json.9.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Error occurred while getting package vulnerability data: No such host is known. (api.nuget.org:443)",
-      "projectPath": "C:\\Users\\PC\\Desktop\\project_3\\Project3.Api\\Project3.Api.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\PC\\Desktop\\project_3\\Project3.Api\\Project3.Api.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }
