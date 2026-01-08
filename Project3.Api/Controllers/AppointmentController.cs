@@ -14,8 +14,6 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     // response recordi gadavawodo -> rogorc working hourshi davwere
     
     [HttpPost]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> CreateAppointment([FromBody] CreateAppointmentCommand command)
     {
         return await Handle(command);
@@ -23,8 +21,6 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
 
 
     [HttpPut]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> RescheduleAppointment([FromBody] RescheduleAppointmentCommand command)
     {
         return await Handle(command);
@@ -32,8 +28,6 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     
     
     [HttpDelete("{appointmentId}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> DeleteAppointment(Guid appointmentId, [FromQuery] string reason) 
     {
         return await Handle(new CancelAppointmentCommand(appointmentId, reason));
@@ -41,7 +35,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     
 
     [HttpGet]
-    [ProducesResponseType(typeof(Result<List<GetAppointmentQueryResponsed>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<GetAppointmentQueryResponsed>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> GetAllAppointments()
     {
@@ -50,9 +44,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     }
     
     [HttpGet("appointment/{id}")]
-    [ProducesResponseType(typeof(Result<GetAppointmentQueryResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GetAppointmentQueryResponse), StatusCodes.Status200OK)]
     public async Task<IResult> GetAppointmentById(Guid id)
     {
         return await Handle<GetAppointmentByIdQuery, GetAppointmentQueryResponse>(
@@ -60,8 +52,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
     }
     
     [HttpGet("provider/{providerId}")]
-    [ProducesResponseType(typeof(Result<List<GetAppointmentQueryResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(List<GetAppointmentQueryResponse>), StatusCodes.Status200OK)]
     public async Task<IResult> GetAppointmentsByProvider(Guid providerId)
     {
         return await Handle<GetAppointmentsByProviderQuery, List<GetAppointmentQueryResponse>>(

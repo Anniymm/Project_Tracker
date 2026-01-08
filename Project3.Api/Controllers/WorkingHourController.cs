@@ -12,8 +12,8 @@ public class WorkingHoursController(ISender sender) : ApiController(sender)
 {
 
     [HttpGet("provider/{providerId:guid}")]
-    [ProducesResponseType(typeof(Result<List<WorkingHourResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(List<WorkingHourResponse>), StatusCodes.Status200OK)]
+    // [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> GetByProvider(Guid providerId)
     {
         return await Handle<GetWorkingHoursByProviderQuery, List<WorkingHourResponse>>(
@@ -22,16 +22,12 @@ public class WorkingHoursController(ISender sender) : ApiController(sender)
     
 
     [HttpPost]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Create([FromBody] CreateWorkingHoursCommand command)
     {
         return await Handle(command);
     }
   
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Update(Guid id, [FromBody] UpdateWorkingHoursRequest request)
     {
         var command = new UpdateWorkingHoursCommand(
@@ -46,8 +42,6 @@ public class WorkingHoursController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Delete(Guid id)
     {
         return await Handle(new DeleteWorkingHoursCommand(id));
