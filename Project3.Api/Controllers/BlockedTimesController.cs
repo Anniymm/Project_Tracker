@@ -9,6 +9,7 @@ namespace Project3.Api.Controllers;
 public class BlockedTimesController(ISender sender) : ApiController(sender)
 {
     [HttpGet("provider/{providerId:guid}")]
+    [ProducesResponseType(typeof(List<GetBlockedTimesByProviderQueryResponse>), StatusCodes.Status200OK)]
     public async Task<IResult> GetByProvider(Guid providerId) 
         => await Handle(new GetBlockedTimesByProviderQuery(providerId));
 

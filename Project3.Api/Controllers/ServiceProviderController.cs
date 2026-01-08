@@ -21,6 +21,7 @@ public class ServiceProviderController(ISender sender) : ApiController(sender)
     }
     
     [HttpGet("get-all")]
+    [ProducesResponseType(typeof(List<ServiceProviderResponse>), StatusCodes.Status200OK)]
     public async Task<IResult> GetAllProviders()
     {
         return await Handle<GetServiceProvidersQuery, List<ServiceProviderResponse>>(
@@ -28,6 +29,7 @@ public class ServiceProviderController(ISender sender) : ApiController(sender)
     }
     
     [HttpGet("provider/{id}")]
+    [ProducesResponseType(typeof(List<GetProvidersQueryResponse>), StatusCodes.Status200OK)]
     public async Task<IResult> GetProviderById(Guid id)
     {
         return await Handle<GetServiceProviderByIdQuery, GetProvidersQueryResponse>(

@@ -36,7 +36,7 @@ public class AppointmentsController(ISender sender) : ApiController(sender)
 
     [HttpGet]
     [ProducesResponseType(typeof(List<GetAppointmentQueryResponsed>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IResult> GetAllAppointments()
     {
         return await Handle<GetAllAppointmentsQuery, List<GetAppointmentQueryResponsed>>(
