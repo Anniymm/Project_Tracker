@@ -62,8 +62,93 @@ public sealed class CreateAppointmentHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        CreateAppointmentCommand request,
+        CancellationToken cancellationToken)
     {
+        // provideris arseboba
+        var provider = await _unitOfWork.ServiceProviders.GetByIdAsync(request.ProviderId);
+        if (provider == null)
+            return Error.NotFound("Provider.NotFound", $"Service provider with ID {request.ProviderId} not found.");
+
+        if (!provider.IsActive)
+            return Error.Conflict("Provider.Inactive", "Cannot create appointment for inactive service provider.");
+
+        // 2. drois shemowmeba working hoursebshi
+        var dayOfWeek = (int)request.AppointmentDate.DayOfWeek;
+        var workingHours = await _unitOfWork.WorkingHours.GetAllByProviderAndDayAsync(request.ProviderId, dayOfWeek);
+
+        var activeWorkingHours = workingHours.Where(wh => wh.IsActive).ToList();
+        
+        if (!activeWorkingHours.Any())
+            return Error.Conflict(
+                "WorkingHours.NotAvailable", 
+                $"Provider does not work on {request.AppointmentDate.DayOfWeek}.");
+
+        bool isWithinWorkingHours = activeWorkingHours.Any(wh =>
+            request.StartTime >= wh.StartTime &&
+            request.EndTime <= wh.EndTime);
+
+        if (!isWithinWorkingHours)
+        {
+            var workingHoursDisplay = string.Join(", ", 
+                activeWorkingHours.Select(wh => $"{wh.StartTime:hh\\:mm}-{wh.EndTime:hh\\:mm}"));
+            
+            return Error.Conflict(
+                "WorkingHours.OutsideSchedule",
+                $"Requested time is outside provider's working hours. Provider works: {workingHoursDisplay}");
+        }
+
+        // available aris tu ara magi shemowmeba
+        var appointmentStartDateTime = new DateTime(
+            request.AppointmentDate.Year,
+            request.AppointmentDate.Month,
+            request.AppointmentDate.Day,
+            request.StartTime.Hour,
+            request.StartTime.Minute,
+            request.StartTime.Second,
+            DateTimeKind.Utc);
+
+        var appointmentEndDateTime = new DateTime(
+            request.AppointmentDate.Year,
+            request.AppointmentDate.Month,
+            request.AppointmentDate.Day,
+            request.EndTime.Hour,
+            request.EndTime.Minute,
+            request.EndTime.Second,
+            DateTimeKind.Utc);
+
+        var blockedTimes = await _unitOfWork.BlockedTimes.GetByProviderIdAsync(request.ProviderId);
+
+        // appointments gadafarva xo ar aqvs sxva blocked time-tan
+        var blockingTime = blockedTimes.FirstOrDefault(bt =>
+            (appointmentStartDateTime >= bt.StartDateTime && appointmentStartDateTime < bt.EndDateTime) ||
+            (appointmentEndDateTime > bt.StartDateTime && appointmentEndDateTime <= bt.EndDateTime) ||
+            (appointmentStartDateTime <= bt.StartDateTime && appointmentEndDateTime >= bt.EndDateTime));
+
+        if (blockingTime != null)
+            return Error.Conflict(
+                "TimeSlot.Blocked",
+                $"This time slot is blocked. Reason: {blockingTime.Reason}");
+
+        // appointmentebi confliqturad rom ar iyos
+        var existingAppointments = await _unitOfWork.Appointments.GetByProviderAsync(request.ProviderId);
+
+        var conflictingAppointment = existingAppointments.FirstOrDefault(apt =>
+            apt.AppointmentDate == request.AppointmentDate &&
+            apt.Status != AppointmentStatus.cancelled &&
+            apt.Status != AppointmentStatus.no_show &&
+            (
+                (request.StartTime >= apt.StartTime && request.StartTime < apt.EndTime) ||
+                (request.EndTime > apt.StartTime && request.EndTime <= apt.EndTime) ||
+                (request.StartTime <= apt.StartTime && request.EndTime >= apt.EndTime)
+            ));
+        // wesit 409
+        if (conflictingAppointment != null)
+            return Error.Conflict(
+                "TimeSlot.Conflict",
+                $"This time slot conflicts with an existing appointment at {conflictingAppointment.StartTime:hh\\:mm}-{conflictingAppointment.EndTime:hh\\:mm}.");
+        
         var appointment = new Appointment(
             id: Guid.NewGuid(),
             providerId: request.ProviderId,
@@ -73,46 +158,43 @@ public sealed class CreateAppointmentHandler
             appointmentDate: request.AppointmentDate,
             startTime: request.StartTime,
             endTime: request.EndTime,
-
-            status: AppointmentStatus.no_show,   // axal appointmentebs defaultad rom qondes
+            status: AppointmentStatus.scheduled,
             cancellationReason: null,
-
             isRecurring: request.IsRecurring,
             recurrenceRule: request.RecurrenceRule,
-
-            parentAppointmentId: null,             
-
+            parentAppointmentId: null,
             createdAt: DateTime.UtcNow,
             updatedAt: DateTime.UtcNow
         );
 
         await _unitOfWork.Appointments.AddAsync(appointment);
 
-        // confirmation email rom gavushvat queueshi
+        // gmailic rom gagzavnos 
+        // TODO: checking unda amas
         var confirmationEmail = new EmailQueue(
             id: Guid.NewGuid(),
             appointmentId: appointment.Id,
             toEmail: appointment.CustomerEmail,
             notificationType: EmailNotificationType.Confirmation,
-            scheduledAt: DateTimeOffset.UtcNow // egreve rom gag=igzavnos
+            scheduledAt: DateTimeOffset.UtcNow
         );
         await _unitOfWork.EmailQueues.AddAsync(confirmationEmail);
 
-        // Queue shi rom davamatot d=reminder email - 1 dghit adre gaigzanos
-        var appointmentDateTime = request.AppointmentDate.ToDateTime(request.StartTime);
-        var reminderScheduledAt = new DateTimeOffset(appointmentDateTime, TimeSpan.Zero).AddHours(-24);
-        
-        if (reminderScheduledAt > DateTimeOffset.UtcNow)
+        // shesaxsenebeli gmail
+        var reminderTime = appointmentStartDateTime.AddHours(-24);
+
+        if (reminderTime > DateTime.UtcNow)
         {
             var reminderEmail = new EmailQueue(
                 id: Guid.NewGuid(),
                 appointmentId: appointment.Id,
                 toEmail: appointment.CustomerEmail,
                 notificationType: EmailNotificationType.Reminder,
-                scheduledAt: reminderScheduledAt
+                scheduledAt: new DateTimeOffset(reminderTime, TimeSpan.Zero)
             );
             await _unitOfWork.EmailQueues.AddAsync(reminderEmail);
         }
+        
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success("Appointment created successfully");
